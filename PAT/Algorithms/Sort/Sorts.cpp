@@ -210,6 +210,69 @@ public:
 
 
 /***********************************************************************
+                            MergeSort
+***********************************************************************/
+class MergeSort {
+public:
+    int* mergeSort(int* A, int n) {
+        // write code here
+        int result[n];
+        sort_helper(A,0,n-1,result);
+        return A;
+    }
+
+    void sort_helper(int *A,int left,int right,int *result)
+    {
+        if(1==right-left)
+        {
+            if(A[left]>A[right])
+            {
+                int temp = A[left];
+                A[left] = A[right];
+                A[right] = temp;
+            }
+            return;
+        }else if(0==right-left){
+            return;
+        }else{
+            sort_helper(A,left,left+(right-left+1)/2,result);
+            sort_helper(A,left+(right-left+1)/2+1,right,result);
+            merge(A,left,right,result);
+            for(int i=left;i<=right;i++)
+            {
+                A[i] = result[i];
+            }
+        }
+    }
+
+    void merge(int *A,int start,int end,int *result)
+    {
+        int left_len = (end-start+1)/2 + 1;
+        int left_index = start;
+        int right_index = start + left_len;
+        int cur_index = left_index;
+        while(left_index<start+left_len && right_index<end+1)
+        {
+            if(A[left_index]<=A[right_index])
+            {
+                result[cur_index++] = A[left_index++];
+            }else{
+                result[cur_index++] = A[right_index++];
+            }
+        }
+        while(left_index<start+left_len)
+        {
+            result[cur_index++] = A[left_index++];
+        }
+        while(right_index<end+1)
+        {
+            result[cur_index++] = A[right_index++];
+        }
+    }
+};
+
+
+/***********************************************************************
                             Main Function
 ***********************************************************************/
 
