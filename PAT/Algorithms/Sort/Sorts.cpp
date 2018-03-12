@@ -180,6 +180,36 @@ public:
 
 
 /***********************************************************************
+                            ShellSort
+***********************************************************************/
+class ShellSort {
+public:
+    int* shellSort(int* A, int n) {
+        // write code here
+        shell(A,n);
+        return A;
+    }
+
+    void shell(int *A,int n)
+    {
+        int gap,i,j;
+        for(gap=n/2;gap>0;gap/=2)
+        {
+            for(i=gap;i<n;i++)
+            {
+                for(j=i-gap;j>=0&&A[j]>A[j+gap];j-=gap)
+                {
+                    int temp = A[j];
+                    A[j] = A[j+gap];
+                    A[j+gap] = temp;
+                }
+            }
+        }
+    }
+};
+
+
+/***********************************************************************
                             Main Function
 ***********************************************************************/
 
