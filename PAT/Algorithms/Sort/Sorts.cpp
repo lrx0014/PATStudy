@@ -273,6 +273,111 @@ public:
 
 
 /***********************************************************************
+                            CountingSort
+***********************************************************************/
+class CountingSort {
+public:
+    int* countingSort(int* A, int n) {
+        // write code here
+        count_sort(A,n);
+        return A;
+    }
+    
+    void count_sort(int* A,int n)
+    {
+        int* sorted      = (int*)malloc(sizeof(int)*n);
+        int* count_array = (int*)malloc(sizeof(int)*1024);
+        for(int i=0;i<1024;i++)
+        {
+            count_array[i] = 0;
+        }
+        for(int i=0;i<n;i++)
+        {
+            count_array[A[i]]++;
+        }
+        for(int i=1;i<1024;i++)
+        {
+            count_array[i] += count_array[i-1]; 
+        }
+        for(int i=n;i>0;i--)
+        {
+            sorted[count_array[A[i-1]]-1] = A[i-1];
+            count_array[A[i-1]]--;
+        }
+        for(int i=0;i<n;i++)
+        {
+            A[i] = sorted[i];
+        }
+        free(count_array);
+        free(sorted);
+    }
+};
+
+
+/***********************************************************************
+                            RadixSort
+***********************************************************************/
+class RadixSort {
+public:
+    int* radixSort(int* A, int n) {
+        // write code here
+        radix_sort(A,n);
+        return A;
+    }
+    
+    int maxbit(int* A,int n)
+    {
+        int max   = 1;
+        int level = 10;
+        for(int i=0;i<n;i++)
+        {
+            while(A[i]>level)
+            {
+                level *= 10;
+                ++max;
+            }
+        }
+        return max;
+    }
+    
+    void radix_sort(int* A,int n)
+    {
+        int max = maxbit(A,n);
+        int sorted[n];
+        int bucket[10];
+        int cur = 1;
+        for(int i=1;i<=max;i++)
+        {
+            for(int j=0;j<10;j++)
+            {
+                bucket[j] = 0;
+            }
+            for(int j=0;j<n;j++)
+            {
+                int k = (A[j]/cur)%10;
+                bucket[k]++;
+            }
+            for(int j=1;j<10;j++)
+            {
+                bucket[j] += bucket[j-1];
+            }
+            for(int j=n-1;j>=0;j--)
+            {
+                int k = (A[j]/cur)%10;
+                sorted[bucket[k]-1] = A[j];
+                bucket[k]--;
+            }
+            for(int j=0;j<n;j++)
+            {
+                A[j] = sorted[j];
+            }
+            cur *= 10;
+        }
+    }
+};
+
+
+/***********************************************************************
                             Main Function
 ***********************************************************************/
 
